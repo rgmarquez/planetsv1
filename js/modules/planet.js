@@ -1,3 +1,8 @@
+/**
+ * Classes for aggregating impulses and the planet class itself.
+ * @author Richard "Greg" Marquez (aka G-Money)
+ * @license MIT
+ */
 import { distance } from "./utils.js";
 
 class ImpulseAggregator {
@@ -6,7 +11,7 @@ class ImpulseAggregator {
   }
 
   addAcceleration(dx, dy) {
-    this.impulses.push({'dx' : dx, 'dy' : dy});
+    this.impulses.push({ dx: dx, dy: dy });
   }
 
   clearAcceleration() {
@@ -17,11 +22,11 @@ class ImpulseAggregator {
     let ax = 0;
     let ay = 0;
     this.impulses.forEach((impulse) => {
-        ax += impulse.dx;
-        ay += impulse.dy;
+      ax += impulse.dx;
+      ay += impulse.dy;
     });
     this.clearAcceleration();
-    return ({'ax' : ax, 'ay' : ay});
+    return { ax: ax, ay: ay };
   }
 }
 
@@ -38,22 +43,22 @@ class Planet {
     this.vy = init.vy;
     this.ax = 0.0;
     this.ay = 0.0;
-    this.aggregateAcceleration = new ImpulseAggregator()
+    this.aggregateAcceleration = new ImpulseAggregator();
   }
 
-  // Change to getters and setters:
+  // TODO : Change to getters and setters:
   getX() {
-    return (this.x);
-  };
+    return this.x;
+  }
   getY() {
-    return (this.y);
-  };
+    return this.y;
+  }
   setX(x) {
     this.x = x;
-  };
+  }
   setY(y) {
     this.y = y;
-  };
+  }
   setVx(vx) {
     this.vx = vx;
   }
@@ -73,7 +78,14 @@ class Planet {
     var coy = centerObject.getY();
 
     targetDrawContext.beginPath();
-    targetDrawContext.arc(this.x - cox + screenOffsets.dx, this.y - coy + screenOffsets.dy, this.radius, 0, 2 * Math.PI, false);
+    targetDrawContext.arc(
+      this.x - cox + screenOffsets.dx,
+      this.y - coy + screenOffsets.dy,
+      this.radius,
+      0,
+      2 * Math.PI,
+      false
+    );
     targetDrawContext.fillStyle = this.fill;
     targetDrawContext.fill();
     targetDrawContext.lineWidth = 2;
@@ -92,10 +104,11 @@ class Planet {
   }
 
   resolveAcceleration() {
-    const resolvedAcceleration = this.aggregateAcceleration.resolveAcceleration();
+    const resolvedAcceleration =
+      this.aggregateAcceleration.resolveAcceleration();
     this.ax += resolvedAcceleration.ax;
     this.ay += resolvedAcceleration.ay;
-  };
+  }
 
   // class (static) methods
   static computePhysics(obj1, obj2) {
@@ -103,13 +116,19 @@ class Planet {
     if (d > 0) {
       const dx = obj1.x - obj2.x;
       const dy = obj1.y - obj2.y;
-      const force = (obj1.mass + obj2.mass) / (d * d)
-      const ax = (dx/d) * force;
-      const ay = (dy/d) * force;
+      const force = (obj1.mass + obj2.mass) / (d * d);
+      const ax = (dx / d) * force;
+      const ay = (dy / d) * force;
       const obj1MassRatio = obj1.mass / (obj1.mass + obj2.mass);
       const obj2MassRatio = obj2.mass / (obj1.mass + obj2.mass);
-      obj1.aggregateAcceleration.addAcceleration(-ax * obj2MassRatio, -ay * obj2MassRatio);
-      obj2.aggregateAcceleration.addAcceleration(ax * obj1MassRatio, ay * obj1MassRatio);
+      obj1.aggregateAcceleration.addAcceleration(
+        -ax * obj2MassRatio,
+        -ay * obj2MassRatio
+      );
+      obj2.aggregateAcceleration.addAcceleration(
+        ax * obj1MassRatio,
+        ay * obj1MassRatio
+      );
     }
   }
 }

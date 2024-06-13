@@ -1,14 +1,16 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/style.css">
-  </head>
-  <body onresize="resizeCanvas();">
-    <canvas id="myCanvas" width="1350" height="720"></canvas>
-    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="js/script.js" type="module"></script>
-    <script>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="//code.jquery.com/jquery-2.1.1.min.js" defer></script>
+    <script src="js/script.js" type="module" defer></script>
+    <script type="module">
+      import { planetCanvasResize } from "./js/script.js";
+      window.planetCanvasResize = planetCanvasResize;
     </script>
+  </head>
+  <body onresize="window.planetCanvasResize();">
+    <canvas id="myCanvas" width="1350" height="720"></canvas>
   </body>
 </html>
