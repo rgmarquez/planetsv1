@@ -143,7 +143,7 @@ function tick() {
 }
 
 export function planetCanvasResize() {
-  resizeCanvas(canvas, context);
+  centerOfScreen = resizeCanvas(canvas, context);
 }
 
 $(document).ready(function () {
